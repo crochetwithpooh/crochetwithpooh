@@ -11,6 +11,7 @@
   :root{
     --paper: #FAF6EE; --paper-warm: #F6EFE2; --ink: #2C2A26; --ink-soft: #6B675E;
     --blue-pale: #E4EDF3; --pink-pale: #FBEDF1; --pink-deep: #E39FB2; --yellow-deep: #D9A93B;
+    --whatsapp: #2FAE60; --instagram: #C0397F;
     --line: rgba(44,42,38,0.14); --line-soft: rgba(44,42,38,0.08);
     --display: 'Fraunces', serif; --body: 'Work Sans', sans-serif; --mono: 'Space Mono', monospace;
   }
@@ -28,37 +29,39 @@
   .reveal{ opacity: 0; transform: translateY(40px) scale(0.95); transition: opacity 1s cubic-bezier(0.34, 1.56, 0.64, 1), transform 1s cubic-bezier(0.34, 1.56, 0.64, 1); }
   .reveal.is-visible{ opacity: 1; transform: translateY(0) scale(1); }
 
-  header.nav{ padding: 25px 0 0; }
-  .nav-row{ display:flex; align-items:center; justify-content: space-between; padding-bottom: 20px; border-bottom: 1px solid var(--line-soft); }
-  
+  header.nav{ padding: 20px 0 0; position: sticky; top: 0; background: var(--pink-pale); z-index: 50; }
+  .nav-row{ display:flex; align-items:center; justify-content: space-between; padding-bottom: 16px; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; gap: 12px; }
+
   /* PROFILE & WORDMARK DESIGN */
-  .wordmark{ 
-    font-family: var(--display); 
-    font-size: 22px; 
-    font-weight: 600; 
+  .wordmark{
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 600;
     letter-spacing: 0.02em;
-    display:flex; 
-    align-items:center; 
-    gap:14px; 
-    cursor: pointer; 
+    display:flex;
+    align-items:center;
+    gap:12px;
+    cursor: pointer;
     transition: transform .3s ease;
+    white-space: nowrap;
   }
   .wordmark:hover {
     transform: scale(1.02);
   }
-  
+
   /* CIRCULAR PROFILE WITH ZOOM & BORDER */
-  .profile-avatar{ 
-    width: 60px; 
-    height: 60px; 
-    border-radius: 50%; 
-    overflow: hidden; 
+  .profile-avatar{
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
     padding: 3px;
-    background: linear-gradient(135deg, var(--pink-deep), #F0C862); 
+    background: linear-gradient(135deg, var(--pink-deep), #F0C862);
     box-shadow: 0 8px 18px -4px rgba(227,159,178,0.5);
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
   }
   .wordmark:hover .profile-avatar {
@@ -66,18 +69,18 @@
     background: linear-gradient(135deg, #F0C862, var(--pink-deep));
     box-shadow: 0 12px 22px -4px rgba(227,159,178,0.7);
   }
-  .profile-avatar img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
+  .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     object-position: center;
-    transform: scale(1.15); 
-    border-radius: 50%; 
+    transform: scale(1.15);
+    border-radius: 50%;
     background: #fff;
     border: 1px solid rgba(255,255,255,0.8);
   }
-  
-  nav.links{ display:flex; gap:32px; font-size: 15px; font-weight: 500; color: var(--ink-soft); }
+
+  nav.links{ display:flex; align-items:center; gap:24px; font-size: 14px; font-weight: 500; color: var(--ink-soft); flex-wrap: wrap; }
   nav.links a{ text-decoration:none; color: inherit; cursor: pointer; transition: color .3s ease; position: relative; }
   nav.links a::after {
     content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: var(--pink-deep); transition: width .3s ease;
@@ -85,10 +88,50 @@
   nav.links a:hover { color: var(--ink); }
   nav.links a:hover::after { width: 100%; }
 
+  .cart-btn{
+    position: relative; display:flex; align-items:center; justify-content:center; width: 42px; height: 42px;
+    border-radius: 50%; background: #fff; border: 1px solid var(--line); cursor: pointer; font-size: 18px; transition: transform .3s ease, box-shadow .3s ease;
+  }
+  .cart-btn:hover{ transform: translateY(-2px); box-shadow: 0 8px 16px -4px rgba(44,42,38,0.2); }
+  .cart-badge{
+    position: absolute; top: -6px; right: -6px; background: var(--pink-deep); color: #fff; font-family: var(--mono);
+    font-size: 10.5px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 999px; display:flex; align-items:center; justify-content:center; padding: 0 4px;
+  }
+
+  .cart-overlay{ display:none; position: fixed; inset:0; background: rgba(44,42,38,0.5); z-index: 90; }
+  .cart-overlay.active{ display:block; }
+  .cart-drawer{
+    position: fixed; top:0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: var(--paper); z-index: 91;
+    box-shadow: -20px 0 50px rgba(0,0,0,0.15); transition: right .4s cubic-bezier(0.34, 1.1, 0.64, 1); display:flex; flex-direction: column;
+  }
+  .cart-drawer.active{ right: 0; }
+  .cart-drawer-head{ padding: 24px 24px 16px; display:flex; align-items:center; justify-content: space-between; border-bottom: 1px solid var(--line-soft); }
+  .cart-drawer-head h3{ font-size: 22px; }
+  .cart-close{ width: 36px; height: 36px; border-radius: 50%; background:#fff; border:1px solid var(--line); cursor:pointer; font-size: 16px; }
+  .cart-items{ flex:1; overflow-y: auto; padding: 16px 24px; }
+  .cart-empty{ color: var(--ink-soft); font-size: 14px; text-align:center; padding: 40px 0; }
+  .cart-item{ display:flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line-soft); align-items:center; }
+  .cart-item img{ width: 56px; height: 56px; border-radius: 12px; object-fit: cover; flex-shrink:0; }
+  .cart-item-info{ flex:1; min-width: 0; }
+  .cart-item-info h4{ font-size: 14.5px; font-weight: 500; margin: 0 0 4px; font-family: var(--body); }
+  .cart-item-info .price{ font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); }
+  .qty-row{ display:flex; align-items:center; gap: 8px; margin-top: 6px; }
+  .qty-btn{ width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--line); background: #fff; cursor: pointer; font-size: 13px; display:flex; align-items:center; justify-content:center; }
+  .qty-val{ font-family: var(--mono); font-size: 13px; min-width: 16px; text-align:center; }
+  .cart-remove{ background:none; border:none; color: var(--ink-soft); cursor:pointer; font-size: 13px; text-decoration: underline; padding:0; }
+  .cart-drawer-foot{ padding: 20px 24px 28px; border-top: 1px solid var(--line-soft); }
+  .cart-subtotal{ display:flex; justify-content: space-between; font-family: var(--mono); font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+  .checkout-btn{
+    width: 100%; padding: 14px; border-radius: 999px; background: var(--whatsapp); color: #fff; border: none;
+    font-size: 14.5px; font-weight: 600; cursor: pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition: transform .25s ease;
+  }
+  .checkout-btn:hover{ transform: translateY(-2px); }
+  .checkout-btn:disabled{ opacity: 0.5; cursor: not-allowed; transform:none; }
+
   .page-view { display: none; }
   .page-view.active { display: block; }
 
-  .hero{ padding: 70px 0; }
+  .hero{ padding: 60px 0; }
   .hero-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items:center; }
   .hero-text h1{ font-size: clamp(34px, 4.2vw, 56px); line-height: 1.1; }
   .hero-text h1 em{ font-style: italic; color: var(--pink-deep); }
@@ -97,7 +140,7 @@
   .hero-photos{ position: relative; height: 440px; }
   .photo-frame{
     position: absolute; border-radius: 20px; border: 5px solid #fff; box-shadow: 0 20px 40px -15px rgba(44,42,38,0.3);
-    overflow: hidden; background: #fff; transition: transform .5s ease;
+    overflow: hidden; background: #fff; transition: transform .5s ease; cursor: pointer;
   }
   .photo-frame img{ width:100%; height:100%; object-fit: cover; object-position: center top; }
   .pf1{ width: 52%; height: 62%; top: 0; left: 2%; transform: rotate(-4deg); animation: float1 6s ease-in-out infinite; }
@@ -110,7 +153,7 @@
   .cta{
     display:inline-flex; align-items:center; gap: 10px; margin-top: 35px; padding: 14px 28px;
     background: var(--ink); color: var(--paper); border-radius: 999px; font-size: 14px; text-decoration:none;
-    transition: transform .3s ease, background .3s ease; cursor: pointer;
+    transition: transform .3s ease, background .3s ease; cursor: pointer; border: none;
   }
   .cta:hover{ transform: translateY(-2px); background: var(--pink-deep); }
 
@@ -124,13 +167,29 @@
     border: 1px solid var(--line); transition: transform .4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow .4s ease; min-height: 380px; background: #fff;
   }
   .card:hover{ transform: translateY(-8px); box-shadow: 0 24px 45px -15px rgba(44,42,38,0.25); }
-  .card-img-wrap { width: 100%; height: 230px; border-radius: 16px; overflow: hidden; margin-bottom: 16px; background: #f0f0f0; }
+  .card-img-wrap { width: 100%; height: 230px; border-radius: 16px; overflow: hidden; margin-bottom: 16px; background: #f0f0f0; cursor: pointer; position: relative; }
   .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transition: transform .5s ease; }
   .card:hover .card-img-wrap img { transform: scale(1.06); }
+  .card-img-wrap::after{
+    content: "🔍 Tap to view"; position: absolute; bottom: 10px; right: 10px; background: rgba(44,42,38,0.72); color: #fff;
+    font-family: var(--mono); font-size: 10px; padding: 5px 10px; border-radius: 999px; opacity: 0; transition: opacity .3s ease;
+  }
+  .card-img-wrap:hover::after{ opacity: 1; }
 
   .card .tag{ font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--pink-deep); margin-bottom: 6px; display:block; }
   .card h3{ font-size: 20px; font-weight: 500; }
   .card .price{ margin-top: 6px; font-family: var(--mono); font-size: 14px; font-weight: 700; }
+
+  .order-row{ display:flex; gap: 8px; margin-top: 16px; }
+  .order-btn{
+    flex: 1; display:flex; align-items:center; justify-content:center; gap:6px; padding: 10px 12px; border-radius: 999px;
+    font-size: 12.5px; font-weight: 600; text-decoration: none; cursor: pointer; border: none; transition: transform .25s ease, filter .25s ease;
+  }
+  .order-btn:hover{ transform: translateY(-2px); filter: brightness(1.15); }
+  .order-btn.wa{ background: var(--ink); color: #fff; }
+  .order-btn.ig{ background: var(--instagram); color: #fff; }
+  .c1 .order-btn.wa{ background: #fff; color: var(--ink); }
+  .c1 .order-btn.ig{ background: #d94b96; }
 
   .c1{ grid-column: span 6; background: linear-gradient(155deg, #35332F, var(--ink)); color: var(--paper); min-height: 420px; }
   .c1 .tag{ color: var(--yellow-deep); }
@@ -145,14 +204,14 @@
 
   .story-page-wrapper { max-width: 900px; margin: 50px auto; padding: 20px; animation: pageFade 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
   @keyframes pageFade { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-  
+
   .story-hero-card { background: #fff; padding: 60px; border-radius: 32px; box-shadow: 0 25px 50px -12px rgba(44,42,38,0.08); border: 1px solid var(--line); position: relative; overflow: hidden; }
   .story-hero-card::before { content: "🧶"; position: absolute; right: -20px; bottom: -20px; font-size: 140px; opacity: 0.06; transform: rotate(-15deg); }
-  
+
   .story-hero-card h1 { font-size: clamp(32px, 4vw, 46px); line-height: 1.15; margin-bottom: 24px; }
   .story-hero-card h1 em { font-style: italic; color: var(--pink-deep); }
   .story-hero-card p { font-size: 17px; color: var(--ink-soft); line-height: 1.9; margin-bottom: 24px; }
-  
+
   .timeline-highlights { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 35px 0; }
   .highlight-box { background: var(--pink-pale); padding: 22px; border-radius: 20px; border-left: 4px solid var(--pink-deep); }
   .highlight-box h4 { font-family: var(--display); font-size: 18px; margin-bottom: 6px; color: var(--ink); }
@@ -163,6 +222,21 @@
   .contact-card h2 { font-size: 38px; margin-bottom: 15px; }
   .contact-card p { color: var(--ink-soft); font-size: 16px; margin-bottom: 30px; }
   .contact-detail-box { background: var(--blue-pale); padding: 25px; border-radius: 20px; font-family: var(--mono); font-size: 15px; color: var(--ink); display: inline-block; margin-bottom: 30px; }
+  .contact-order-row{ display:flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+  .contact-order-row .order-btn{ flex: 0 0 auto; padding: 14px 26px; font-size: 14px; }
+
+  /* Lightbox */
+  .lightbox{ display:none; position: fixed; inset: 0; background: rgba(44,42,38,0.88); z-index: 100; align-items:center; justify-content:center; padding: 24px; }
+  .lightbox.active{ display:flex; }
+  .lightbox-inner{ max-width: 520px; width: 100%; background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 60px -10px rgba(0,0,0,0.5); }
+  .lightbox-inner img{ width: 100%; max-height: 65vh; object-fit: contain; background: #f0f0f0; display:block; }
+  .lightbox-body{ padding: 22px 24px; }
+  .lightbox-body h3{ font-size: 22px; margin-bottom: 4px; }
+  .lightbox-body .price{ font-family: var(--mono); font-weight:700; font-size: 15px; margin-bottom: 16px; }
+  .lightbox-close{
+    position: absolute; top: 18px; right: 18px; width: 40px; height: 40px; border-radius: 50%; background: #fff; border: none;
+    font-size: 20px; cursor: pointer; display:flex; align-items:center; justify-content:center; box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  }
 
   @media (max-width: 900px){
     .hero-grid{ grid-template-columns: 1fr; }
@@ -170,6 +244,16 @@
     .c1, .c2, .c3, .c4, .c5, .c6, .c7{ grid-column: span 1; }
     .story-hero-card { padding: 30px; }
     .timeline-highlights { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 560px){
+    .wrap{ padding: 0 20px; }
+    .nav-row{ justify-content: center; text-align: center; }
+    .wordmark{ font-size: 17px; }
+    .profile-avatar{ width: 40px; height: 40px; }
+    nav.links{ gap: 18px; font-size: 13.5px; justify-content: center; width: 100%; }
+    .order-row{ flex-direction: column; }
+    .cart-drawer{ max-width: 100%; }
   }
 
   footer{ padding: 40px 0; text-align:center; font-family: var(--mono); font-size: 11px; color: var(--ink-soft); text-transform: uppercase; }
@@ -187,6 +271,10 @@
       <a onclick="switchPage('home')">Shop</a>
       <a onclick="switchPage('story')">Story</a>
       <a onclick="switchPage('contact')">Contact</a>
+      <button class="cart-btn" onclick="openCart()" aria-label="Cart">
+        🛒
+        <span class="cart-badge" id="cart-badge" style="display:none">0</span>
+      </button>
     </nav>
   </div>
 </header>
@@ -202,9 +290,9 @@
       </div>
 
       <div class="hero-photos reveal">
-        <div class="photo-frame pf1"><img src="https://i.ibb.co/0RdRh8c1/photo-1.jpg" alt="Hero 1"></div>
-        <div class="photo-frame pf2"><img src="https://i.ibb.co/F4ZFBvRS/photo-2.jpg" alt="Hero 2"></div>
-        <div class="photo-frame pf3"><img src="https://i.ibb.co/xSDgVkYr/photo-3.jpg" alt="Hero 3"></div>
+        <div class="photo-frame pf1" onclick="openLightbox('https://i.ibb.co/0RdRh8c1/photo-1.jpg','','')"><img src="https://i.ibb.co/0RdRh8c1/photo-1.jpg" alt="Hero 1"></div>
+        <div class="photo-frame pf2" onclick="openLightbox('https://i.ibb.co/F4ZFBvRS/photo-2.jpg','','')"><img src="https://i.ibb.co/F4ZFBvRS/photo-2.jpg" alt="Hero 2"></div>
+        <div class="photo-frame pf3" onclick="openLightbox('https://i.ibb.co/xSDgVkYr/photo-3.jpg','','')"><img src="https://i.ibb.co/xSDgVkYr/photo-3.jpg" alt="Hero 3"></div>
       </div>
     </div>
   </section>
@@ -213,73 +301,10 @@
     <div class="wrap">
       <div class="section-head reveal">
         <h2>The collection</h2>
-        <p style="color:var(--ink-soft); font-size:14px; margin:5px 0 0;">Every piece is made in small batches, never mass produced.</p>
+        <p style="color:var(--ink-soft); font-size:14px; margin:5px 0 0;">Every piece is made in small batches, never mass produced. Tap a photo to see it up close, or order straight from the card.</p>
       </div>
 
-      <div class="bento">
-        <div class="card c1 reveal">
-          <div class="card-img-wrap"><img src="https://i.ibb.co/67HMTVsn/baby-doll.jpg" alt="Crochet Baby Doll Top"></div>
-          <div class="content">
-            <span class="tag">Featured Wearable · Best Seller</span>
-            <h3>Crochet Baby Doll Top</h3>
-            <div class="price">NPR 1000 / $6.59</div>
-          </div>
-        </div>
-
-        <div class="card c2 bg-blue reveal">
-          <div class="card-img-wrap"><img src="https://i.ibb.co/Zzdg7hyN/item-1.jpg" alt="3 Roses"></div>
-          <div class="content">
-            <span class="tag">Bouquet</span>
-            <h3>Crochet 3 Roses Bouquet</h3>
-            <div class="price">NPR 200 / $1.32</div>
-          </div>
-        </div>
-
-        <div class="card c3 bg-yellow reveal">
-          <div class="card-img-wrap"><img src="https://i.ibb.co/h1wXwtpb/item-2.jpg" alt="Satin Bouquet"></div>
-          <div class="content">
-            <span class="tag">Bouquet</span>
-            <h3>Satin Bouquet</h3>
-            <div class="price">NPR 500 / $3.29</div>
-          </div>
-        </div>
-
-        <div class="card c4 bg-pink reveal">
-          <div class="card-img-wrap"><img src="https://i.ibb.co/fdrRpnwH/rhododendron.jpg" alt="Crochet Rhododendron"></div>
-          <div class="content">
-            <span class="tag">Bouquet</span>
-            <h3>Crochet Rhododendron</h3>
-            <div class="price">NPR 50 / $0.33 per piece</div>
-          </div>
-        </div>
-
-        <div class="card c5 bg-blue reveal">
-          <div class="card-img-wrap"><img src="https://i.ibb.co/dsh5285q/beanie.jpg" alt="Crochet Beanie"></div>
-          <div class="content">
-            <span class="tag">Headwear</span>
-            <h3>Crochet Beanie</h3>
-            <div class="price">NPR 350 / $2.31</div>
-          </div>
-        </div>
-
-        <div class="card c6 bg-yellow reveal">
-          <div class="card-img-wrap"><img src="https://i.ibb.co/HTMxzgKC/pipe-cleaner.jpg" alt="Pipe Cleaner Bouquet"></div>
-          <div class="content">
-            <span class="tag">Bouquet</span>
-            <h3>Pipe Cleaner Bouquet</h3>
-            <div class="price">NPR 1000 / $6.59</div>
-          </div>
-        </div>
-
-        <div class="card c7 bg-pink reveal">
-          <div class="card-img-wrap"><img src="https://i.ibb.co/HLJVjPYg/photo-2.jpg" alt="Hibiscus Top"></div>
-          <div class="content">
-            <span class="tag">Wearable</span>
-            <h3>Crochet Hibiscus Top</h3>
-            <div class="price">NPR 1200 / $7.91</div>
-          </div>
-        </div>
-      </div>
+      <div class="bento" id="bento-grid"></div>
     </div>
   </section>
 </div>
@@ -290,9 +315,9 @@
       <div class="story-hero-card">
         <span class="eyebrow">The Journey of Loops</span>
         <h1>Where it all began,<br><em>and why I never stopped.</em></h1>
-        
+
         <p>My crochet journey started way back when I was in class 10. Holding a hook and turning a simple ball of yarn into something tangible felt like pure magic. It was my cozy escape amidst school days, filled with endless curiosity and dropped stitches.</p>
-        
+
         <div class="timeline-highlights">
           <div class="highlight-box">
             <h4>✨ Class 10 Beginnings</h4>
@@ -304,10 +329,10 @@
           </div>
         </div>
 
-        <p>Coming back to crochet and turning it into <strong>CROCHETWITHPOOH</strong> turned out to be the absolute best decision I’ve ever made. Every single stitch today carries a piece of that childhood love, grown into something much more personal.</p>
-        
+        <p>Coming back to crochet and turning it into <strong>CROCHETWITHPOOH</strong> turned out to be the absolute best decision I've ever made. Every single stitch today carries a piece of that childhood love, grown into something much more personal.</p>
+
         <p>Thank you for being part of my cozy little chapter. Every piece I make is stitched slowly so it can stay with you forever! 🌸</p>
-        
+
         <br>
         <a class="cta" onclick="switchPage('home')">← Back to Shop Collection</a>
       </div>
@@ -322,12 +347,17 @@
         <span class="eyebrow">Let's Connect</span>
         <h2>Get in Touch 💌</h2>
         <p>Have a custom order in mind, or want a special handmade bouquet or top? I would love to hear from you!</p>
-        
+
         <div class="contact-detail-box">
           Instagram: @CrochetWithPooh<br>
           Handcrafted slowly with love by me.
         </div>
-        
+
+        <div class="contact-order-row">
+          <a class="order-btn wa" href="https://wa.me/9779814098934?text=Hi!%20I%27d%20like%20to%20ask%20about%20your%20crochet%20pieces." target="_blank" rel="noopener">💬 Message on WhatsApp</a>
+          <a class="order-btn ig" href="https://instagram.com/crochetwithpooh" target="_blank" rel="noopener">📸 DM on Instagram</a>
+        </div>
+
         <br>
         <a class="cta" onclick="switchPage('home')">← Back to Shop Collection</a>
       </div>
@@ -339,10 +369,175 @@
   <div class="wrap">©️ 2026 CrochetWithPooh · Made with love</div>
 </footer>
 
+<div class="lightbox" id="lightbox" onclick="if(event.target===this) closeLightbox()">
+  <div class="lightbox-inner">
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox-body">
+      <h3 id="lightbox-title"></h3>
+      <div class="price" id="lightbox-price"></div>
+      <div class="order-row">
+        <button class="order-btn wa" id="lightbox-add">🛒 Add to Cart</button>
+      </div>
+    </div>
+  </div>
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+</div>
+
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-drawer-head">
+    <h3>Your Cart</h3>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items"></div>
+  <div class="cart-drawer-foot">
+    <div class="cart-subtotal"><span>Subtotal</span><span id="cart-subtotal">NPR 0</span></div>
+    <button class="checkout-btn" id="checkout-btn" onclick="checkoutOnWhatsApp()">💬 Checkout on WhatsApp</button>
+  </div>
+</div>
+
 <script>
+  const WHATSAPP_NUMBER = "9779814098934"; // country code + number, no + or spaces
+  const INSTAGRAM_URL = "https://instagram.com/crochetwithpooh";
+
+  const products = [
+    { img: "https://i.ibb.co/67HMTVsn/baby-doll.jpg", tag: "Featured Wearable · Best Seller", name: "Crochet Baby Doll Top", price: "NPR 1000 / $6.59", cardClass: "c1", bg: "" },
+    { img: "https://i.ibb.co/Zzdg7hyN/item-1.jpg", tag: "Bouquet", name: "Crochet 3 Roses Bouquet", price: "NPR 200 / $1.32", cardClass: "c2", bg: "bg-blue" },
+    { img: "https://i.ibb.co/h1wXwtpb/item-2.jpg", tag: "Bouquet", name: "Satin Bouquet", price: "NPR 500 / $3.29", cardClass: "c3", bg: "bg-yellow" },
+    { img: "https://i.ibb.co/fdrRpnwH/rhododendron.jpg", tag: "Bouquet", name: "Crochet Rhododendron", price: "NPR 50 / $0.33 per piece", cardClass: "c4", bg: "bg-pink" },
+    { img: "https://i.ibb.co/dsh5285q/beanie.jpg", tag: "Headwear", name: "Crochet Beanie", price: "NPR 350 / $2.31", cardClass: "c5", bg: "bg-blue" },
+    { img: "https://i.ibb.co/HTMxzgKC/pipe-cleaner.jpg", tag: "Bouquet", name: "Pipe Cleaner Bouquet", price: "NPR 1000 / $6.59", cardClass: "c6", bg: "bg-yellow" },
+    { img: "https://i.ibb.co/HLJVjPYg/photo-2.jpg", tag: "Wearable", name: "Crochet Hibiscus Top", price: "NPR 1200 / $7.91", cardClass: "c7", bg: "bg-pink" }
+  ];
+
+  function waLink(productName){
+    const msg = encodeURIComponent(`Hi! I'd like to order: ${productName}`);
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+  }
+
+  function renderProducts(){
+    const grid = document.getElementById('bento-grid');
+    grid.innerHTML = products.map((p, i) => `
+      <div class="card ${p.cardClass} ${p.bg} reveal">
+        <div class="card-img-wrap" onclick="openLightbox(${i})">
+          <img src="${p.img}" alt="${p.name}">
+        </div>
+        <div class="content">
+          <span class="tag">${p.tag}</span>
+          <h3>${p.name}</h3>
+          <div class="price">${p.price}</div>
+        </div>
+        <div class="order-row">
+          <button class="order-btn wa" onclick="event.stopPropagation(); addToCart(${i})">🛒 Add to Cart</button>
+        </div>
+      </div>
+    `).join('');
+
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
+
+  let lightboxIndex = null;
+  function openLightbox(index){
+    const p = products[index];
+    lightboxIndex = index;
+    document.getElementById('lightbox-img').src = p.img;
+    document.getElementById('lightbox-title').textContent = p.name;
+    document.getElementById('lightbox-price').textContent = p.price;
+    document.getElementById('lightbox').classList.add('active');
+  }
+  function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('active');
+  }
+  document.getElementById('lightbox-add').addEventListener('click', () => {
+    if(lightboxIndex !== null) addToCart(lightboxIndex);
+  });
+
+  // ---- CART ----
+  let cart = JSON.parse(localStorage.getItem('cwp-cart') || '[]');
+
+  function saveCart(){
+    localStorage.setItem('cwp-cart', JSON.stringify(cart));
+    updateCartUI();
+  }
+
+  function addToCart(index){
+    const p = products[index];
+    const existing = cart.find(c => c.name === p.name);
+    if(existing){ existing.qty += 1; } else { cart.push({ name: p.name, price: p.price, img: p.img, qty: 1 }); }
+    saveCart();
+    openCart();
+  }
+
+  function changeQty(name, delta){
+    const item = cart.find(c => c.name === name);
+    if(!item) return;
+    item.qty += delta;
+    if(item.qty <= 0) cart = cart.filter(c => c.name !== name);
+    saveCart();
+  }
+
+  function removeItem(name){
+    cart = cart.filter(c => c.name !== name);
+    saveCart();
+  }
+
+  function extractNpr(priceStr){
+    const match = priceStr.match(/NPR\s*([\d,]+)/i);
+    return match ? parseInt(match[1].replace(/,/g,''), 10) : 0;
+  }
+
+  function updateCartUI(){
+    const badge = document.getElementById('cart-badge');
+    const totalQty = cart.reduce((sum, c) => sum + c.qty, 0);
+    badge.style.display = totalQty > 0 ? 'flex' : 'none';
+    badge.textContent = totalQty;
+
+    const itemsEl = document.getElementById('cart-items');
+    if(cart.length === 0){
+      itemsEl.innerHTML = '<div class="cart-empty">Your cart is empty.<br>Add a few of your favourite pieces!</div>';
+    } else {
+      itemsEl.innerHTML = cart.map(c => `
+        <div class="cart-item">
+          <img src="${c.img}" alt="${c.name}">
+          <div class="cart-item-info">
+            <h4>${c.name}</h4>
+            <div class="price">${c.price}</div>
+            <div class="qty-row">
+              <button class="qty-btn" onclick="changeQty('${c.name.replace(/'/g,"\\'")}', -1)">−</button>
+              <span class="qty-val">${c.qty}</span>
+              <button class="qty-btn" onclick="changeQty('${c.name.replace(/'/g,"\\'")}', 1)">+</button>
+              <button class="cart-remove" onclick="removeItem('${c.name.replace(/'/g,"\\'")}')">Remove</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    const subtotal = cart.reduce((sum, c) => sum + extractNpr(c.price) * c.qty, 0);
+    document.getElementById('cart-subtotal').textContent = `NPR ${subtotal.toLocaleString()}`;
+    document.getElementById('checkout-btn').disabled = cart.length === 0;
+  }
+
+  function openCart(){
+    document.getElementById('cart-drawer').classList.add('active');
+    document.getElementById('cart-overlay').classList.add('active');
+  }
+  function closeCart(){
+    document.getElementById('cart-drawer').classList.remove('active');
+    document.getElementById('cart-overlay').classList.remove('active');
+  }
+
+  function checkoutOnWhatsApp(){
+    if(cart.length === 0) return;
+    let lines = cart.map(c => `• ${c.name} x${c.qty} (${c.price})`).join('\n');
+    const subtotal = cart.reduce((sum, c) => sum + extractNpr(c.price) * c.qty, 0);
+    const msg = `Hi! I'd like to order:\n${lines}\n\nEstimated subtotal: NPR ${subtotal.toLocaleString()}`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+
   function switchPage(pageId) {
     document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
-    
+
     if(pageId === 'story') {
       document.getElementById('story-page').classList.add('active');
       window.scrollTo(0, 0);
@@ -358,11 +553,13 @@
     }
   }
 
-  const els = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
   }, { threshold: 0.1 });
-  els.forEach(el => io.observe(el));
+
+  renderProducts();
+  updateCartUI();
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 
 </body>
