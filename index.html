@@ -6,7 +6,7 @@
 <title>CROCHETWITHPOOH — Made by hand. Kept forever.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450;1,9..144,500&family=Work+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450;1,9..144,500&family=Work+Sans:wght@300;400;500;600&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper: #FAF6EE; --paper-warm: #F6EFE2; --ink: #2C2A26; --ink-soft: #6B675E;
@@ -22,7 +22,7 @@
     color: var(--ink); font-family: var(--body); -webkit-font-smoothing: antialiased; line-height: 1.5; overflow-x: hidden;
   }
   .wrap{ max-width: 1180px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 2; }
-  .eyebrow{ font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--pink-deep); }
+  .eyebrow{ font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); }
   h1, h2, h3 { font-family: var(--display); font-weight: 450; margin: 0; color: var(--ink); }
 
   /* Pop-up animation */
@@ -140,9 +140,9 @@
   .hero-photos{ position: relative; height: 440px; }
   .photo-frame{
     position: absolute; border-radius: 20px; border: 5px solid #fff; box-shadow: 0 20px 40px -15px rgba(44,42,38,0.3);
-    overflow: hidden; background: #fff; transition: transform .5s ease; cursor: pointer;
+    overflow: hidden; background: #fff; transition: transform .5s ease; cursor: pointer; display:flex; align-items:center; justify-content:center;
   }
-  .photo-frame img{ width:100%; height:100%; object-fit: cover; object-position: center top; }
+  .photo-frame img{ width:100%; height:100%; object-fit: contain; object-position: center; }
   .pf1{ width: 52%; height: 62%; top: 0; left: 2%; transform: rotate(-4deg); animation: float1 6s ease-in-out infinite; }
   .pf2{ width: 44%; height: 46%; top: 5%; right: 0; transform: rotate(4deg); animation: float2 7s ease-in-out infinite 1s; }
   .pf3{ width: 46%; height: 42%; bottom: 0; right: 8%; transform: rotate(-2deg); animation: float3 8s ease-in-out infinite 2s; }
@@ -167,9 +167,9 @@
     border: 1px solid var(--line); transition: transform .4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow .4s ease; min-height: 380px; background: #fff;
   }
   .card:hover{ transform: translateY(-8px); box-shadow: 0 24px 45px -15px rgba(44,42,38,0.25); }
-  .card-img-wrap { width: 100%; height: 230px; border-radius: 16px; overflow: hidden; margin-bottom: 16px; background: #f0f0f0; cursor: pointer; position: relative; }
-  .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transition: transform .5s ease; }
-  .card:hover .card-img-wrap img { transform: scale(1.06); }
+  .card-img-wrap { width: 100%; height: 230px; border-radius: 16px; overflow: hidden; margin-bottom: 16px; background: #fff; cursor: pointer; position: relative; display:flex; align-items:center; justify-content:center; padding:8px; }
+  .card-img-wrap img { width: 100%; height: 100%; object-fit: contain; object-position: center; transition: transform .5s ease; }
+  .card:hover .card-img-wrap img { transform: none; }
   .card-img-wrap::after{
     content: "🔍 Tap to view"; position: absolute; bottom: 10px; right: 10px; background: rgba(44,42,38,0.72); color: #fff;
     font-family: var(--mono); font-size: 10px; padding: 5px 10px; border-radius: 999px; opacity: 0; transition: opacity .3s ease;
@@ -228,8 +228,8 @@
   /* Lightbox */
   .lightbox{ display:none; position: fixed; inset: 0; background: rgba(44,42,38,0.88); z-index: 100; align-items:center; justify-content:center; padding: 24px; }
   .lightbox.active{ display:flex; }
-  .lightbox-inner{ max-width: 520px; width: 100%; background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 60px -10px rgba(0,0,0,0.5); }
-  .lightbox-inner img{ width: 100%; max-height: 65vh; object-fit: contain; background: #f0f0f0; display:block; }
+  .lightbox-inner{ max-width: 720px; width: 100%; background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 60px -10px rgba(0,0,0,0.5); }
+  .lightbox-inner img{ width: 100%; max-height: 80vh; object-fit: contain; background: #f0f0f0; display:block; }
   .lightbox-body{ padding: 22px 24px; }
   .lightbox-body h3{ font-size: 22px; margin-bottom: 4px; }
   .lightbox-body .price{ font-family: var(--mono); font-weight:700; font-size: 15px; margin-bottom: 16px; }
@@ -240,7 +240,7 @@
 
   @media (max-width: 900px){
     .hero-grid{ grid-template-columns: 1fr; }
-    .bento{ grid-template-columns: 1fr; }
+    .bento{ grid-template-columns: repeat(2, 1fr); }
     .c1, .c2, .c3, .c4, .c5, .c6, .c7{ grid-column: span 1; }
     .story-hero-card { padding: 30px; }
     .timeline-highlights { grid-template-columns: 1fr; }
@@ -254,6 +254,7 @@
     nav.links{ gap: 18px; font-size: 13.5px; justify-content: center; width: 100%; }
     .order-row{ flex-direction: column; }
     .cart-drawer{ max-width: 100%; }
+    .card-img-wrap { height: 200px; }
   }
 
   footer{ padding: 40px 0; text-align:center; font-family: var(--mono); font-size: 11px; color: var(--ink-soft); text-transform: uppercase; }
@@ -290,9 +291,9 @@
       </div>
 
       <div class="hero-photos reveal">
-        <div class="photo-frame pf1" onclick="openLightbox('https://i.ibb.co/0RdRh8c1/photo-1.jpg','','')"><img src="https://i.ibb.co/0RdRh8c1/photo-1.jpg" alt="Hero 1"></div>
-        <div class="photo-frame pf2" onclick="openLightbox('https://i.ibb.co/F4ZFBvRS/photo-2.jpg','','')"><img src="https://i.ibb.co/F4ZFBvRS/photo-2.jpg" alt="Hero 2"></div>
-        <div class="photo-frame pf3" onclick="openLightbox('https://i.ibb.co/xSDgVkYr/photo-3.jpg','','')"><img src="https://i.ibb.co/xSDgVkYr/photo-3.jpg" alt="Hero 3"></div>
+        <div class="photo-frame pf1" onclick="openLightbox('assets/images/image-8.jpg')"><img src="assets/images/image-8.jpg" alt="Hero 1"></div>
+        <div class="photo-frame pf2" onclick="openLightbox('assets/images/image-9.jpg')"><img src="assets/images/image-9.jpg" alt="Hero 2"></div>
+        <div class="photo-frame pf3" onclick="openLightbox('assets/images/image-7.jpg')"><img src="assets/images/image-7.jpg" alt="Hero 3"></div>
       </div>
     </div>
   </section>
@@ -316,7 +317,7 @@
         <span class="eyebrow">The Journey of Loops</span>
         <h1>Where it all began,<br><em>and why I never stopped.</em></h1>
 
-        <p>My crochet journey started way back when I was in class 10. Holding a hook and turning a simple ball of yarn into something tangible felt like pure magic. It was my cozy escape amidst school days, filled with endless curiosity and dropped stitches.</p>
+        <p>My crochet journey started way back when I was in class 10. Holding a hook and turning a simple ball of yarn into something tangible felt like pure magic. It was my cozy escape amidst school life and daydreams. I kept coming back to the meditative rhythm of making stitches over the years and finally</p>
 
         <div class="timeline-highlights">
           <div class="highlight-box">
@@ -329,7 +330,7 @@
           </div>
         </div>
 
-        <p>Coming back to crochet and turning it into <strong>CROCHETWITHPOOH</strong> turned out to be the absolute best decision I've ever made. Every single stitch today carries a piece of that childhood love, grown into something much more personal.</p>
+        <p>Coming back to crochet and turning it into <strong>CROCHETWITHPOOH</strong> turned out to be the absolute best decision I've ever made. Every single stitch today carries a piece of that childhood wonder and calm.</p>
 
         <p>Thank you for being part of my cozy little chapter. Every piece I make is stitched slowly so it can stay with you forever! 🌸</p>
 
@@ -383,6 +384,19 @@
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
 </div>
 
+<!-- Hidden placeholders for images you will upload later -->
+<div style="display:none">
+  <img src="assets/images/image-1.jpg" alt="placeholder1">
+  <img src="assets/images/image-2.jpg" alt="placeholder2">
+  <img src="assets/images/image-3.jpg" alt="placeholder3">
+  <img src="assets/images/image-4.jpg" alt="placeholder4">
+  <img src="assets/images/image-5.jpg" alt="placeholder5">
+  <img src="assets/images/image-6.jpg" alt="placeholder6">
+  <img src="assets/images/image-7.jpg" alt="placeholder7">
+  <img src="assets/images/image-8.jpg" alt="placeholder8">
+  <img src="assets/images/image-9.jpg" alt="placeholder9">
+</div>
+
 <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
 <div class="cart-drawer" id="cart-drawer">
   <div class="cart-drawer-head">
@@ -401,13 +415,13 @@
   const INSTAGRAM_URL = "https://instagram.com/crochetwithpooh";
 
   const products = [
-    { img: "https://i.ibb.co/67HMTVsn/baby-doll.jpg", tag: "Featured Wearable · Best Seller", name: "Crochet Baby Doll Top", price: "NPR 1000 / $6.59", cardClass: "c1", bg: "" },
-    { img: "https://i.ibb.co/Zzdg7hyN/item-1.jpg", tag: "Bouquet", name: "Crochet 3 Roses Bouquet", price: "NPR 200 / $1.32", cardClass: "c2", bg: "bg-blue" },
-    { img: "https://i.ibb.co/h1wXwtpb/item-2.jpg", tag: "Bouquet", name: "Satin Bouquet", price: "NPR 500 / $3.29", cardClass: "c3", bg: "bg-yellow" },
-    { img: "https://i.ibb.co/fdrRpnwH/rhododendron.jpg", tag: "Bouquet", name: "Crochet Rhododendron", price: "NPR 50 / $0.33 per piece", cardClass: "c4", bg: "bg-pink" },
-    { img: "https://i.ibb.co/dsh5285q/beanie.jpg", tag: "Headwear", name: "Crochet Beanie", price: "NPR 350 / $2.31", cardClass: "c5", bg: "bg-blue" },
-    { img: "https://i.ibb.co/HTMxzgKC/pipe-cleaner.jpg", tag: "Bouquet", name: "Pipe Cleaner Bouquet", price: "NPR 1000 / $6.59", cardClass: "c6", bg: "bg-yellow" },
-    { img: "https://i.ibb.co/HLJVjPYg/photo-2.jpg", tag: "Wearable", name: "Crochet Hibiscus Top", price: "NPR 1200 / $7.91", cardClass: "c7", bg: "bg-pink" }
+    { img: "assets/images/image-1.jpg", tag: "Featured Wearable · Best Seller", name: "Crochet Baby Doll Top", price: "NPR 1000 / $6.59", cardClass: "c1", bg: "" },
+    { img: "assets/images/image-2.jpg", tag: "Bouquet", name: "Crochet 3 Roses Bouquet", price: "NPR 200 / $1.32", cardClass: "c2", bg: "bg-blue" },
+    { img: "assets/images/image-3.jpg", tag: "Bouquet", name: "Satin Bouquet", price: "NPR 500 / $3.29", cardClass: "c3", bg: "bg-yellow" },
+    { img: "assets/images/image-4.jpg", tag: "Bouquet", name: "Crochet Rhododendron", price: "NPR 50 / $0.33 per piece", cardClass: "c4", bg: "bg-pink" },
+    { img: "assets/images/image-5.jpg", tag: "Headwear", name: "Crochet Beanie", price: "NPR 350 / $2.31", cardClass: "c5", bg: "bg-blue" },
+    { img: "assets/images/image-6.jpg", tag: "Bouquet", name: "Pipe Cleaner Bouquet", price: "NPR 1000 / $6.59", cardClass: "c6", bg: "bg-yellow" },
+    { img: "assets/images/image-7.jpg", tag: "Wearable", name: "Crochet Hibiscus Top", price: "NPR 1200 / $7.91", cardClass: "c7", bg: "bg-pink" }
   ];
 
   function waLink(productName){
@@ -417,6 +431,7 @@
 
   function renderProducts(){
     const grid = document.getElementById('bento-grid');
+    if(!grid) return;
     grid.innerHTML = products.map((p, i) => `
       <div class="card ${p.cardClass} ${p.bg} reveal">
         <div class="card-img-wrap" onclick="openLightbox(${i})">
@@ -433,24 +448,59 @@
       </div>
     `).join('');
 
+    // Observe reveal elements once (rendered content will include .reveal)
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   }
 
   let lightboxIndex = null;
-  function openLightbox(index){
-    const p = products[index];
-    lightboxIndex = index;
-    document.getElementById('lightbox-img').src = p.img;
-    document.getElementById('lightbox-title').textContent = p.name;
-    document.getElementById('lightbox-price').textContent = p.price;
-    document.getElementById('lightbox').classList.add('active');
+  function openLightbox(indexOrUrl, title = '', price = ''){
+    // Determine if a numeric index was passed
+    const asNumber = (typeof indexOrUrl === 'number') ? indexOrUrl : (String(indexOrUrl).match(/^\d+$/) ? Number(indexOrUrl) : null);
+
+    let imgSrc = '';
+    let itemName = title || '';
+    let itemPrice = price || '';
+
+    if(asNumber !== null && products[asNumber]){
+      const p = products[asNumber];
+      lightboxIndex = asNumber;
+      imgSrc = p.img;
+      itemName = p.name;
+      itemPrice = p.price;
+    } else if(typeof indexOrUrl === 'string' && indexOrUrl.trim() !== ''){
+      lightboxIndex = null;
+      imgSrc = indexOrUrl;
+    } else {
+      return; // nothing to show
+    }
+
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    const lbTitle = document.getElementById('lightbox-title');
+    const lbPrice = document.getElementById('lightbox-price');
+    const lbAdd = document.getElementById('lightbox-add');
+    if(!lb || !lbImg || !lbTitle || !lbPrice || !lbAdd) return;
+
+    lbImg.src = imgSrc;
+    lbTitle.textContent = itemName || '';
+    lbPrice.textContent = itemPrice || '';
+
+    // enable add-to-cart only for known product indexes
+    lbAdd.disabled = lightboxIndex === null;
+    lb.classList.add('active');
   }
+
   function closeLightbox(){
-    document.getElementById('lightbox').classList.remove('active');
+    const lb = document.getElementById('lightbox');
+    if(!lb) return;
+    lb.classList.remove('active');
+    const lbImg = document.getElementById('lightbox-img');
+    if(lbImg) lbImg.src = '';
   }
-  document.getElementById('lightbox-add').addEventListener('click', () => {
-    if(lightboxIndex !== null) addToCart(lightboxIndex);
-  });
+  const lbAddBtn = document.getElementById('lightbox-add');
+  if(lbAddBtn){
+    lbAddBtn.addEventListener('click', () => { if(lightboxIndex !== null) addToCart(lightboxIndex); });
+  }
 
   // ---- CART ----
   let cart = JSON.parse(localStorage.getItem('cwp-cart') || '[]');
@@ -462,6 +512,7 @@
 
   function addToCart(index){
     const p = products[index];
+    if(!p) return;
     const existing = cart.find(c => c.name === p.name);
     if(existing){ existing.qty += 1; } else { cart.push({ name: p.name, price: p.price, img: p.img, qty: 1 }); }
     saveCart();
@@ -489,42 +540,50 @@
   function updateCartUI(){
     const badge = document.getElementById('cart-badge');
     const totalQty = cart.reduce((sum, c) => sum + c.qty, 0);
-    badge.style.display = totalQty > 0 ? 'flex' : 'none';
-    badge.textContent = totalQty;
+    if(badge) badge.style.display = totalQty > 0 ? 'flex' : 'none';
+    if(badge) badge.textContent = totalQty;
 
     const itemsEl = document.getElementById('cart-items');
-    if(cart.length === 0){
-      itemsEl.innerHTML = '<div class="cart-empty">Your cart is empty.<br>Add a few of your favourite pieces!</div>';
-    } else {
-      itemsEl.innerHTML = cart.map(c => `
-        <div class="cart-item">
-          <img src="${c.img}" alt="${c.name}">
-          <div class="cart-item-info">
-            <h4>${c.name}</h4>
-            <div class="price">${c.price}</div>
-            <div class="qty-row">
-              <button class="qty-btn" onclick="changeQty('${c.name.replace(/'/g,"\\'")}', -1)">−</button>
-              <span class="qty-val">${c.qty}</span>
-              <button class="qty-btn" onclick="changeQty('${c.name.replace(/'/g,"\\'")}', 1)">+</button>
-              <button class="cart-remove" onclick="removeItem('${c.name.replace(/'/g,"\\'")}')">Remove</button>
+    if(itemsEl){
+      if(cart.length === 0){
+        itemsEl.innerHTML = '<div class="cart-empty">Your cart is empty.<br>Add a few of your favourite pieces!</div>';
+      } else {
+        itemsEl.innerHTML = cart.map(c => `
+          <div class="cart-item">
+            <img src="${c.img}" alt="${c.name}">
+            <div class="cart-item-info">
+              <h4>${c.name}</h4>
+              <div class="price">${c.price}</div>
+              <div class="qty-row">
+                <button class="qty-btn" onclick="changeQty('${c.name.replace(/'/g,"\\'")}', -1)">−</button>
+                <span class="qty-val">${c.qty}</span>
+                <button class="qty-btn" onclick="changeQty('${c.name.replace(/'/g,"\\'")}', 1)">+</button>
+                <button class="cart-remove" onclick="removeItem('${c.name.replace(/'/g,"\\'")}')">Remove</button>
+              </div>
             </div>
           </div>
-        </div>
-      `).join('');
+        `).join('');
+      }
     }
 
     const subtotal = cart.reduce((sum, c) => sum + extractNpr(c.price) * c.qty, 0);
-    document.getElementById('cart-subtotal').textContent = `NPR ${subtotal.toLocaleString()}`;
-    document.getElementById('checkout-btn').disabled = cart.length === 0;
+    const subtotalEl = document.getElementById('cart-subtotal');
+    if(subtotalEl) subtotalEl.textContent = `NPR ${subtotal.toLocaleString()}`;
+    const checkoutBtn = document.getElementById('checkout-btn');
+    if(checkoutBtn) checkoutBtn.disabled = cart.length === 0;
   }
 
   function openCart(){
-    document.getElementById('cart-drawer').classList.add('active');
-    document.getElementById('cart-overlay').classList.add('active');
+    const drawer = document.getElementById('cart-drawer');
+    const overlay = document.getElementById('cart-overlay');
+    if(drawer) drawer.classList.add('active');
+    if(overlay) overlay.classList.add('active');
   }
   function closeCart(){
-    document.getElementById('cart-drawer').classList.remove('active');
-    document.getElementById('cart-overlay').classList.remove('active');
+    const drawer = document.getElementById('cart-drawer');
+    const overlay = document.getElementById('cart-overlay');
+    if(drawer) drawer.classList.remove('active');
+    if(overlay) overlay.classList.remove('active');
   }
 
   function checkoutOnWhatsApp(){
@@ -539,16 +598,16 @@
     document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
 
     if(pageId === 'story') {
-      document.getElementById('story-page').classList.add('active');
+      const sp = document.getElementById('story-page'); if(sp) sp.classList.add('active');
       window.scrollTo(0, 0);
     } else if(pageId === 'contact') {
-      document.getElementById('contact-page').classList.add('active');
+      const cp = document.getElementById('contact-page'); if(cp) cp.classList.add('active');
       window.scrollTo(0, 0);
     } else if(pageId === 'shop-section') {
-      document.getElementById('home-page').classList.add('active');
-      document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+      const hp = document.getElementById('home-page'); if(hp) hp.classList.add('active');
+      const shop = document.getElementById('shop'); if(shop) shop.scrollIntoView({ behavior: 'smooth' });
     } else {
-      document.getElementById('home-page').classList.add('active');
+      const hp = document.getElementById('home-page'); if(hp) hp.classList.add('active');
       window.scrollTo(0, 0);
     }
   }
@@ -557,9 +616,11 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
   }, { threshold: 0.1 });
 
+  // initialize
   renderProducts();
   updateCartUI();
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  // observe initial reveal elements (renderProducts already observes its new items)
+  document.querySelectorAll('.reveal').forEach(el => { if(!el.classList.contains('is-visible')) io.observe(el); });
 </script>
 
 </body>
